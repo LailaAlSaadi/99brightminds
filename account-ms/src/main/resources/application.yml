@@ -1,0 +1,16 @@
+server:
+  port: 9090
+  servlet:
+    context-path: /bank/v1
+spring:
+  security:
+    user:
+      name : "admin"
+      password : "admin"
+  profiles:
+    active: "dev"
+config:
+    data:
+      url: "jdbc:ucanaccess:///home/code/99brightminds/bank-java-service/account-ms/src/main/resources/accountsdb.accdb"
+      driver-class-name: "net.ucanaccess.jdbc.UcanaccessDriver"
+
