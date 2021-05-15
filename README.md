@@ -57,5 +57,3 @@ Download [SonarQube](https://www.sonarqube.org/downloads/)
 ## or with docker by :
 
 docker run-d --name sonarqube -p 9000:9000 -p 9092:9092 sonarqube
-
-6e5473add0cc7c0be934ec9af1a16f72e0e7acf6
