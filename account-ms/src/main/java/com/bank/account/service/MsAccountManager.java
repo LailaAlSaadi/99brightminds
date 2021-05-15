@@ -1,10 +1,14 @@
 package com.bank.account.service;
 
+import com.bank.account.exception.InvalidAccountIdException;
 import com.bank.account.exception.InvalidFromToAmounts;
 import com.bank.account.exception.InvalidFromToDates;
+import com.bank.account.model.entity.AccountInfoEntity;
 import com.bank.account.model.entity.AccountStatementEntity;
+import com.bank.account.model.request.RetrieveStatementsRequest;
+import com.bank.account.model.response.AccountStatementResponse;
 import com.bank.account.repository.AccountRepository;
-import com.bank.account.service.statement.*;
+import com.bank.account.service.filters.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -13,6 +17,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static java.util.Objects.isNull;
+import static org.apache.commons.lang3.StringUtils.isNumeric;
 
 @Slf4j
 @Repository
@@ -25,31 +30,43 @@ public class MsAccountManager implements AccountManager {
         this.msAccountRepository = msAccountRepository;
     }
 
-    public List<AccountStatementEntity> getFilteredStatements(String accountId, StatementsFilter statementsFilter) {
-        return statementsFilter.filter(msAccountRepository.find(accountId));
+    public AccountInfoEntity getAccountInfo(String accountId) {
+        return msAccountRepository.getAccount(accountId);
+    }
+
+    public List<AccountStatementEntity> getAccountInfo(String accountId, StatementsFilter statementsFilter) {
+        return statementsFilter.filter(msAccountRepository.getStatements(accountId));
     }
 
     @Override
-    public List<AccountStatementEntity> getAccountStatements(String accountId, LocalDate dateFrom, LocalDate dateTo, Double amountFrom, Double amountTo) {
-        boolean hasDates = validateDates(dateFrom, dateTo);
-        boolean hasAmount = validateAmount(amountFrom, amountTo);
+        public AccountStatementResponse getAccountStatements(RetrieveStatementsRequest request) {
+        validateAccountId(request.getAccountId());
+        boolean hasDates = validateDates(request.getDateFrom(), request.getDateTo());
+        boolean hasAmount = validateAmount(request.getAmountFrom(), request.getAmountTo());
+
 
         List<AccountStatementEntity> result = null;
         if (hasDates) {
             if (hasAmount) {
-                result = getFilteredStatements(accountId, new AllFilterStatement(amountFrom, amountTo, dateFrom, dateTo));
+                result = getAccountInfo(request.getAccountId(), new AllFilterStatement(request.getAmountFrom(), request.getAmountTo(), request.getDateFrom(), request.getDateTo()));
             } else {
-                result = getFilteredStatements(accountId, new DateFilterStatement(dateFrom, dateTo));
+                result = getAccountInfo(request.getAccountId(), new DateFilterStatement(request.getDateFrom(), request.getDateTo()));
             }
         }
         if (!hasDates) {
             if (hasAmount) {
-                result = getFilteredStatements(accountId, new AmountFilterStatement(amountFrom, amountTo));
+                result = getAccountInfo(request.getAccountId(), new AmountFilterStatement(request.getAmountFrom(), request.getAmountTo()));
             } else {
-                result = getFilteredStatements(accountId, new DefaultFilterStatement());
+                result = getAccountInfo(request.getAccountId(), new DefaultFilterStatement());
             }
         }
-        return result;
+        return new AccountStatementResponse(getAccountInfo(request.getAccountId()),result);
+    }
+
+    private void validateAccountId(String accountId) {
+        if(!isNumeric(accountId)){
+            throw new InvalidAccountIdException();
+        }
     }
 
     private boolean validateAmount(Double amountFrom, Double amountTo) {

@@ -1,5 +1,6 @@
 package com.bank.account.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,10 +19,12 @@ import java.time.LocalDate;
 public class AccountStatementEntity {
 
     @Id
+    @JsonIgnore
     private Integer id;
 
+    @JsonIgnore
     @Column(name = "account_id")
-    private Integer accountId;
+    private String accountId;
 
     @Column(name = "datefield")
     private LocalDate dateField;

@@ -24,20 +24,21 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
+        <java.version>11</java.version>
         <org.springframework.jpa.version>2.4.3</org.springframework.jpa.version>
         <org.springframework.web.version>2.2.1.RELEASE</org.springframework.web.version>
         <org.springframework.security.version>2.2.1.RELEASE</org.springframework.security.version>
         <org.springframework.cloud.version>2.2.1.RELEASE</org.springframework.cloud.version>
+        <org.springframework.test.version>2.3.10.RELEASE</org.springframework.test.version>
         <org.apache.maven.model.version>3.1.0</org.apache.maven.model.version>
         <org.modelmapper.version>2.3.5</org.modelmapper.version>
         <io.springfox.version>2.9.2</io.springfox.version>
         <ch.qos.logback.contrib.version>0.1.5</ch.qos.logback.contrib.version>
-        <junit-jupiter.version>5.5.1</junit-jupiter.version>
-        <junit-platform.version>1.5.1</junit-platform.version>
         <io.swagger.version>1.5.22</io.swagger.version>
         <javase.version>3.0.0</javase.version>
         <ucanaccess.version>5.0.1</ucanaccess.version>
+        <commons-codec.version>1.15</commons-codec.version>
+        <jaxb.api.version>2.3.0</jaxb.api.version>
     </properties>
 
     <dependencyManagement>
@@ -61,6 +62,12 @@
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-stream-kafka</artifactId>
                 <version>${org.springframework.cloud.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>${org.springframework.test.version}</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>io.swagger</groupId>
@@ -107,6 +114,27 @@
                 <artifactId>ucanaccess</artifactId>
                 <version>${ucanaccess.version}</version>
             </dependency>
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${commons-codec.version}</version>
+            </dependency>
+            <!-- API, java.xml.bind module -->
+            <dependency>
+                <groupId>jakarta.xml.bind</groupId>
+                <artifactId>jakarta.xml.bind-api</artifactId>
+                <version>2.3.2</version>
+            </dependency>
+
+            <!-- Runtime, com.sun.xml.bind module -->
+            <dependency>
+                <groupId>org.glassfish.jaxb</groupId>
+                <artifactId>jaxb-runtime</artifactId>
+                <version>2.3.2</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
+
+
 </project>

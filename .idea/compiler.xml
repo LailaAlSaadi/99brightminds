@@ -10,9 +10,6 @@
         <module name="account-ms" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="x-account-ms" target="8" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">

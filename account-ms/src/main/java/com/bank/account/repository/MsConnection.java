@@ -9,8 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 @Slf4j
 @Component
@@ -35,13 +33,7 @@ public class MsConnection {
         }
     }
 
-    public ResultSet executeQuery(String sql) {
-        try {
-            return connection.createStatement()
-                    .executeQuery(sql);
-        } catch (SQLException ex) {
-            Log.error("Error getting connection: " + ex.getMessage());
-            throw new DatabaseConnectionException();
-        }
+    public Connection getConnection() {
+            return connection;
     }
 }

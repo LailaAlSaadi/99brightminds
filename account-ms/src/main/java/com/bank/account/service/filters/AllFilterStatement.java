@@ -1,7 +1,6 @@
-package com.bank.account.service.statement;
+package com.bank.account.service.filters;
 
 import com.bank.account.model.entity.AccountStatementEntity;
-import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.List;
